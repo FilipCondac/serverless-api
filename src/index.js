@@ -10,18 +10,20 @@
 
 export default {
   async fetch(request, env, ctx) {
-    const url = "https://api.unsplash.com/photos";
+    const { query } = await request.json();
 
-    const resp = await fetch(url, {
-      headers: { Authorization: `Client-ID ${env.CLIENT_ID}` },
-    });
+    const resp = await fetch(
+      `https://api.unsplash.com/search/photos?query=${query}`,
+      {
+        headers: { Authorization: `Client-ID ${env.CLIENT_ID}` },
+      }
+    );
 
     const data = await resp.json();
     return new Response(JSON.stringify(data), {
       headers: { "content-type": "application/json;" },
     });
 
-    const { query } = await request.json();
     return new Response(`Your query was ${query}`);
   },
 };
