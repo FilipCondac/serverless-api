@@ -18,12 +18,16 @@ export default {
         headers: { Authorization: `Client-ID ${env.CLIENT_ID}` },
       }
     );
-
     const data = await resp.json();
-    return new Response(JSON.stringify(data), {
+
+    const images = data.results.map((image) => ({
+      id: image.id,
+      image: image.urls.small,
+      link: image.links.html,
+    }));
+
+    return new Response(JSON.stringify(images), {
       headers: { "content-type": "application/json;" },
     });
-
-    return new Response(`Your query was ${query}`);
   },
 };
